@@ -85,6 +85,22 @@ public class LibroDAO {
 		return libros;
 	}
 	
+	public List<Libros> obtenerEstatusDeLibroPorISBN(String isbn) throws SQLException {
+		String sql = "SELECT * FROM Libros WHERE ISBN = '"+isbn+"';";
+		List<Libros> libros = new ArrayList<Libros>();
+		Libros libro = null;
+		try(Connection conn = DatabaseConnection.getInstance().getConnection();
+				Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)){
+			//Aqui estamos repasando los registros que nos muestra el query de este metodo y lo guardamos en una lista. 
+			while(rs.next()){
+				libro = new Libros(rs.getString("ISBN"), rs.getString("Titulo"), rs.getString("Autor"), rs.getString("Disponibilidad"));
+				libro.setLib_id(rs.getInt("Lib_id"));
+				libros.add(libro);
+			}
+		}
+		return libros;
+	}
+	
 	public void eliminarLibro(String isbn) throws SQLException {
 		
 		String sql = "DELETE FROM Libros WHERE ISBN = ?;";

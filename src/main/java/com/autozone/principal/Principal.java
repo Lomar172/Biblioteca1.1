@@ -51,7 +51,7 @@ public class Principal {
 				throw new IllegalArgumentException("Valor invalido: " + welcomeMenuChoice);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			mainMenu();
 		}
 	}
 
@@ -488,27 +488,34 @@ public class Principal {
 			System.out.println("ID de miembro:");
 			int id = scannerAgregar.nextInt();
 			List<Miembros> miembros = miembrosDAO.obtenerMiembrosPorID(id);
-			System.out.println("ID del libro que quieres devolver:");
-			int lib_id = scannerAgregar.nextInt();
-			List<Libros> libros = libroDAO.obtenerEstatusDeLibro(lib_id);
-			switch (libros.get(0).getDisponibilidad()) {
-			case "PRESTADO": {
-				java.util.Date fechaJava = new java.util.Date();
-				java.sql.Date fechaSQL = new java.sql.Date(fechaJava.getTime());
-				Prestamos prestamo = new Prestamos(lib_id, id, fechaSQL, LibroOperacion.DEVOLUCION.toString());
-				prestamoDAO.insertarPrestamo(prestamo);
-				System.out.println("Devolucion registrada exitosamente!");
-				break;
-			}
-			case "DISPONIBLE": {
-				System.out.println("Este libro no ha sido prestado");
-				System.out.println("Selecciona otro");
-				System.out.println();
+			if(!miembros.isEmpty()) {
+				System.out.println("ID del libro que quieres devolver:");
+				int lib_id = scannerAgregar.nextInt();
+				List<Libros> libros = libroDAO.obtenerEstatusDeLibro(lib_id);
+				switch (libros.get(0).getDisponibilidad()) {
+				case "PRESTADO": {
+					java.util.Date fechaJava = new java.util.Date();
+					java.sql.Date fechaSQL = new java.sql.Date(fechaJava.getTime());
+					Prestamos prestamo = new Prestamos(lib_id, id, fechaSQL, LibroOperacion.DEVOLUCION.toString());
+					prestamoDAO.insertarPrestamo(prestamo);
+					System.out.println("Devolucion registrada exitosamente!");
+					break;
+				}
+				case "DISPONIBLE": {
+					System.out.println("Este libro no ha sido prestado");
+					System.out.println("Selecciona otro");
+					System.out.println();
+					operacionDevolucion();
+					break;
+				}
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + libros.get(0).getDisponibilidad());
+				}
+			} else {
+				System.out.println("No se ha encontrado a ningun miembro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
 				operacionDevolucion();
-				break;
-			}
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + libros.get(0).getDisponibilidad());
 			}
 			menuRecursivo();
 		} catch (Exception e) {
@@ -519,46 +526,60 @@ public class Principal {
 	public static void operacionPrestamo() {
 		PrestamosDAO prestamoDAO = new PrestamosDAO();
 		LibroDAO libroDAO = new LibroDAO();
+		MiembroDAO miembrosDAO = new MiembroDAO();
 		try (Scanner scannerAgregar = new Scanner(System.in)) {
-			System.out.println("ISBN del libro que quieres tomar prestado:");
-			int isbn = scannerAgregar.nextInt();
-			List<Libros> libros = libroDAO.obtenerEstatusDeLibro(isbn);
-			// Aqui se toma un valor de la lista de libros para validar el curso de accion a
-			// tomar.
-			switch (libros.get(0).getDisponibilidad()) {
-			case "DISPONIBLE": {
-				System.out.println("ID de miembro:");
-				int id = scannerAgregar.nextInt();
-				java.util.Date fechaJava = new java.util.Date();
-				java.sql.Date fechaSQL = new java.sql.Date(fechaJava.getTime());
-				Prestamos prestamo = new Prestamos(isbn, id, fechaSQL, LibroOperacion.PRESTAMO.toString());
-				prestamoDAO.insertarPrestamo(prestamo);
-				System.out.println("Prestamo registrado exitosamente!");
-				break;
-			}
-			case "PRESTADO": {
-				System.out.println("Este libro ya ha sido prestado");
-				System.out.println("Selecciona otro");
-				System.out.println();
+			System.out.println("ID de miembro:");
+			int id = scannerAgregar.nextInt();
+			List<Miembros> miembros = miembrosDAO.obtenerMiembrosPorID(id);
+			if(!miembros.isEmpty()) {
+				System.out.println("ID del libro que quieres pedir prestado:");
+				int lib_id = scannerAgregar.nextInt();
+				List<Libros> libros = libroDAO.obtenerEstatusDeLibro(lib_id);
+				if(!libros.isEmpty()) {
+					switch (libros.get(0).getDisponibilidad()) {
+					case "PRESTADO": {
+						System.out.println("Este libro no ha sido prestado");
+						System.out.println("Selecciona otro");
+						System.out.println();
+						operacionDevolucion();
+						break;
+					}
+					case "DISPONIBLE": {
+						java.util.Date fechaJava = new java.util.Date();
+						java.sql.Date fechaSQL = new java.sql.Date(fechaJava.getTime());
+						Prestamos prestamo = new Prestamos(lib_id, id, fechaSQL, LibroOperacion.PRESTAMO.toString());
+						prestamoDAO.insertarPrestamo(prestamo);
+						System.out.println("Prestamo registrado exitosamente!");
+						break;
+					}
+					default:
+						throw new IllegalArgumentException("Unexpected value: " + libros.get(0).getDisponibilidad());
+					}
+				} else {
+					System.out.println("No se ha encontrado a ningun libro con ese ID");
+					System.out.println("Intentelo de nuevo.");
+					System.out.println("");
+					operacionPrestamo();
+				}
+			} else {
+				System.out.println("No se ha encontrado a ningun miembro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
 				operacionPrestamo();
-				break;
-			}
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + libros.get(0).getDisponibilidad());
 			}
 			menuRecursivo();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}	
 
 	private static void estatusLibro() {
 		LibroDAO libroDAO = new LibroDAO();
 		try (Scanner scannerAgregar = new Scanner(System.in)) {
-			System.out.println("ID del libro:");
-			int lib_id = scannerAgregar.nextInt();
-			List<Libros> libros = libroDAO.obtenerEstatusDeLibro(lib_id);
-			System.out.println("| ID de libro | TITULO | DISPONIBILIDAD |");
+			System.out.println("ISBN del libro:");
+			String isbn = scannerAgregar.nextLine();
+			List<Libros> libros = libroDAO.obtenerEstatusDeLibroPorISBN(isbn);
+			System.out.println("|      ISBN      | TITULO | DISPONIBILIDAD |");
 			for (Libros libro : libros) {
 				System.out.println(
 						"| " + libro.getIsbn() + " | " + libro.getTitulo() + " | " + libro.getDisponibilidad() + " |");
