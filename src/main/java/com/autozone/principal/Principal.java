@@ -117,9 +117,8 @@ public class Principal {
 				}
 			} else {
 				System.out.println("Ese ID no se encontro en la base de datos.");
-				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				actualizarLib();
+				menuRecursivo();
 			}
 			menuRecursivo();
 		} catch (Exception e) {
@@ -186,7 +185,7 @@ public class Principal {
 				System.out.println("No se ha encontrado a ningun libro con ese ID");
 				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				buscarPorISBN();
+				menuRecursivo();
 			}
 			menuRecursivo();
 		} catch (Exception e) {
@@ -210,7 +209,7 @@ public class Principal {
 				System.out.println("No se ha encontrado a ningun miembro con ese ID");
 				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				buscarPorAutor();
+				menuRecursivo();
 			}
 			
 			menuRecursivo();
@@ -235,7 +234,7 @@ public class Principal {
 				System.out.println("No se ha encontrado a ningun miembro con ese ID");
 				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				buscarPorTitulo();
+				menuRecursivo();
 			}
 			menuRecursivo();
 		} catch (Exception e) {
@@ -334,11 +333,10 @@ public class Principal {
 				}
 			} else {
 				System.out.println("No se ha encontrado a ningun miembro con ese ID");
-				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				actualizarMi();
+				menuRecursivo();
 			}	
-			buscarPorNombre();
+			menuRecursivo();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -358,9 +356,8 @@ public class Principal {
 				}
 			} else {
 				System.out.println("No se ha encontrado a ningun miembro con ese ID");
-				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				actualizarMi();
+				menuRecursivo();
 			}
 			
 			buscarPorId();
@@ -472,7 +469,7 @@ public class Principal {
 				System.out.println("No se ha encontrado a ningun miembro con ese ID");
 				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				actualizarMi();
+				menuRecursivo();
 			}
 			historialDePrestamosDeMiembro();
 		} catch (Exception e) {
@@ -541,7 +538,7 @@ public class Principal {
 						System.out.println("Este libro no ha sido prestado");
 						System.out.println("Selecciona otro");
 						System.out.println();
-						operacionDevolucion();
+						menuRecursivo();
 						break;
 					}
 					case "DISPONIBLE": {

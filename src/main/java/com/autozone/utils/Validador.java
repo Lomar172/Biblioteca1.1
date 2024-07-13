@@ -2,6 +2,7 @@ package com.autozone.utils;
 
 import java.lang.reflect.Field;
 
+import com.autozone.annotations.Nombre_s;
 import com.autozone.annotations.NotNull;
 import com.autozone.annotations.telef;
 import com.autozone.principal.Principal;
@@ -28,6 +29,17 @@ public class Validador {
 				if (value != null && !value.matches("^[0-9]{10,10}")){
 					System.out.println("Los caracteres que ha introducido son no son numeros o la cantidad de numeros es diferente de la esperada");
 					System.out.println("Vuelva a intentarlo.");
+					Principal.agregMi();
+				}
+			}
+			
+			if (field.isAnnotationPresent(Nombre_s.class)){
+				String value = (String) field.get(obj);
+				
+				if (value != null && !value.matches("[a-zA-Z]")){
+					System.out.println("Ha introducido numeros o caracteres que no son letras en el nombre.");
+					System.out.println("Vuelva a intentarlo.");
+					System.out.println("");
 					Principal.agregMi();
 				}
 			}

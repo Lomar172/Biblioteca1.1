@@ -1,5 +1,6 @@
 package com.autozone.models;
 
+import com.autozone.annotations.Nombre_s;
 import com.autozone.annotations.NotNull;
 import com.autozone.annotations.telef;
 
@@ -12,6 +13,7 @@ public class Miembros {
 	
 	private int id;
 	@NotNull
+	@Nombre_s
 	private String nombre;
 	@NotNull
 	@telef
