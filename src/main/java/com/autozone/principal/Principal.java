@@ -113,6 +113,7 @@ public class Principal {
 					autor = scanner.nextLine();
 					Libros libro1 = new Libros(isbn, titulo, autor, libro.getDisponibilidad());
 					libroDAO.actualizarLibro(lib_id, libro1);
+					System.out.println("Libro actualizado con exito!");
 				}
 			} else {
 				System.out.println("Ese ID no se encontro en la base de datos.");
@@ -120,7 +121,6 @@ public class Principal {
 				System.out.println("");
 				actualizarLib();
 			}
-			System.out.println("Libro actualizado con exito!");
 			menuRecursivo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -174,12 +174,19 @@ public class Principal {
 			System.out.println("ISBN del libro:");
 			String isbn = scannerAgregar.nextLine();
 			List<Libros> libros = libroDAO.obtenerLibrosPorIsbn(isbn);
-			// Aqui se leen los datos de una lista y se les da un poco de formato para
-			// presentarse al usuario
-			System.out.println("|     ISBN      | TITULO | AUTOR |");
-			for (Libros libro : libros) {
-				System.out
-						.println("| " + libro.getIsbn() + " | " + libro.getTitulo() + " | " + libro.getAutor() + " |");
+			if(!libros.isEmpty()) {
+				// Aqui se leen los datos de una lista y se les da un poco de formato para
+				// presentarse al usuario
+				System.out.println("|     ISBN      | TITULO | AUTOR |");
+				for (Libros libro : libros) {
+					System.out
+							.println("| " + libro.getIsbn() + " | " + libro.getTitulo() + " | " + libro.getAutor() + " |");
+				}
+			} else {
+				System.out.println("No se ha encontrado a ningun libro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
+				buscarPorISBN();
 			}
 			menuRecursivo();
 		} catch (Exception e) {
@@ -193,11 +200,19 @@ public class Principal {
 			System.out.println("Autor del libro:");
 			String autor = scannerAgregar.nextLine();
 			List<Libros> libros = libroDAO.obtenerLibrosPorAutor(autor);
-			System.out.println("|      ISBN     | TITULO | AUTOR |");
-			for (Libros libro : libros) {
-				System.out
-						.println("| " + libro.getIsbn() + " | " + libro.getTitulo() + " | " + libro.getAutor() + " |");
+			if(!libros.isEmpty()) {
+				System.out.println("|      ISBN     | TITULO | AUTOR |");
+				for (Libros libro : libros) {
+					System.out
+							.println("| " + libro.getIsbn() + " | " + libro.getTitulo() + " | " + libro.getAutor() + " |");
+				}
+			} else {
+				System.out.println("No se ha encontrado a ningun miembro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
+				buscarPorAutor();
 			}
+			
 			menuRecursivo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -210,10 +225,17 @@ public class Principal {
 			System.out.println("Titulo del libro:");
 			String titulo = scannerAgregar.nextLine();
 			List<Libros> libros = libroDAO.obtenerLibrosPorTitulo(titulo);
-			System.out.println("|       ISBN        | TITULO | AUTOR |");
-			for (Libros libro : libros) {
-				System.out
-						.println("| " + libro.getIsbn() + " | " + libro.getTitulo() + " | " + libro.getAutor() + " |");
+			if(!libros.isEmpty()) {
+				System.out.println("|       ISBN        | TITULO | AUTOR |");
+				for (Libros libro : libros) {
+					System.out
+							.println("| " + libro.getIsbn() + " | " + libro.getTitulo() + " | " + libro.getAutor() + " |");
+				}
+			} else {
+				System.out.println("No se ha encontrado a ningun miembro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
+				buscarPorTitulo();
 			}
 			menuRecursivo();
 		} catch (Exception e) {
@@ -304,12 +326,19 @@ public class Principal {
 			System.out.println("ID del miembro:");
 			String nombre = scannerAgregar.nextLine();
 			List<Miembros> miembros = miembroDAO.obtenerMiembrosPorNombre(nombre);
-			System.out.println("| ID | NOMBRE | TELEFONO |");
-			for (Miembros miembro : miembros) {
-				System.out.println(
-						"| " + miembro.getId() + " | " + miembro.getNombre() + " | " + miembro.getTelefono() + " |");
-			}
-			menuRecursivo();
+			if(!miembros.isEmpty()) {
+				System.out.println("| ID | NOMBRE | TELEFONO |");
+				for (Miembros miembro : miembros) {
+					System.out.println(
+							"| " + miembro.getId() + " | " + miembro.getNombre() + " | " + miembro.getTelefono() + " |");
+				}
+			} else {
+				System.out.println("No se ha encontrado a ningun miembro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
+				actualizarMi();
+			}	
+			buscarPorNombre();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -321,12 +350,20 @@ public class Principal {
 			System.out.println("ID del miembro:");
 			int id = scannerAgregar.nextInt();
 			List<Miembros> miembros = miembroDAO.obtenerMiembrosPorID(id);
-			System.out.println("| ID | NOMBRE | TELEFONO |");
-			for (Miembros miembro : miembros) {
-				System.out.println(
-						"| " + miembro.getId() + " | " + miembro.getNombre() + " | " + miembro.getTelefono() + " |");
+			if(!miembros.isEmpty()) {
+				System.out.println("| ID | NOMBRE | TELEFONO |");
+				for (Miembros miembro : miembros) {
+					System.out.println(
+							"| " + miembro.getId() + " | " + miembro.getNombre() + " | " + miembro.getTelefono() + " |");
+				}
+			} else {
+				System.out.println("No se ha encontrado a ningun miembro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
+				actualizarMi();
 			}
-			menuRecursivo();
+			
+			buscarPorId();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -353,13 +390,21 @@ public class Principal {
 		try (Scanner scanner = new Scanner(System.in); Scanner scanner1 = new Scanner(System.in)) {
 			System.out.println("Cual es el ID del miembro que quiere actualizar?");
 			int id = scanner1.nextInt();
-			System.out.println("Nuevo nombre del miembro:");
-			String nombre = scanner.nextLine();
-			System.out.println("Nuevo telefono del miembro:");
-			String telefono = scanner.nextLine();
-			Miembros miembro = new Miembros(nombre, telefono);
-			miembroDAO.actualizarMiembro(id, miembro);
-			System.out.println("Miembro actualizado con exito!");
+			List<Miembros> miembros = miembroDAO.obtenerMiembrosPorID(id);
+			if (!miembros.isEmpty()) {
+				System.out.println("Nuevo nombre del miembro:");
+				String nombre = scanner.nextLine();
+				System.out.println("Nuevo telefono del miembro:");
+				String telefono = scanner.nextLine();
+				Miembros miembro = new Miembros(nombre, telefono);
+				miembroDAO.actualizarMiembro(id, miembro);
+				System.out.println("Miembro actualizado con exito!");
+			} else {
+				System.out.println("No se ha encontrado a ningun miembro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
+				actualizarMi();
+			}
 			menuRecursivo();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -417,12 +462,19 @@ public class Principal {
 			System.out.println("ID del miembro:");
 			int id = scannerAgregar.nextInt();
 			List<Prestamos> prestamos = prestamoDAO.obtenerPrestamos(id);
-			System.out.println("| FOLIO | ISBN | ID | FECHA | OPERACION |");
-			for (Prestamos prestamo : prestamos) {
-				System.out.println("| " + prestamo.getFolio() + " | " + prestamo.getIsbn() + " | " + prestamo.getId()
-						+ " | " + prestamo.getFecha() + " | " + prestamo.getLibro_operacion() + " |");
+			if(!prestamos.isEmpty()) {
+				System.out.println("| FOLIO | ID DE LIBRO | ID DE MIEMBRO | FECHA | OPERACION |");
+				for (Prestamos prestamo : prestamos) {
+					System.out.println("| " + prestamo.getFolio() + " | " + prestamo.getLib_id() + " | " + prestamo.getId()
+							+ " | " + prestamo.getFecha() + " | " + prestamo.getLibro_operacion() + " |");
+				}
+			} else {
+				System.out.println("No se ha encontrado a ningun miembro con ese ID");
+				System.out.println("Intentelo de nuevo.");
+				System.out.println("");
+				actualizarMi();
 			}
-			menuRecursivo();
+			historialDePrestamosDeMiembro();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -431,17 +483,19 @@ public class Principal {
 	private static void operacionDevolucion() {
 		PrestamosDAO prestamoDAO = new PrestamosDAO();
 		LibroDAO libroDAO = new LibroDAO();
+		MiembroDAO miembrosDAO = new MiembroDAO();
 		try (Scanner scannerAgregar = new Scanner(System.in)) {
 			System.out.println("ID de miembro:");
 			int id = scannerAgregar.nextInt();
-			System.out.println("ISBN del libro que quieres devolver:");
-			int isbn = scannerAgregar.nextInt();
-			List<Libros> libros = libroDAO.obtenerEstatusDeLibro(isbn);
+			List<Miembros> miembros = miembrosDAO.obtenerMiembrosPorID(id);
+			System.out.println("ID del libro que quieres devolver:");
+			int lib_id = scannerAgregar.nextInt();
+			List<Libros> libros = libroDAO.obtenerEstatusDeLibro(lib_id);
 			switch (libros.get(0).getDisponibilidad()) {
 			case "PRESTADO": {
 				java.util.Date fechaJava = new java.util.Date();
 				java.sql.Date fechaSQL = new java.sql.Date(fechaJava.getTime());
-				Prestamos prestamo = new Prestamos(isbn, id, fechaSQL, LibroOperacion.DEVOLUCION.toString());
+				Prestamos prestamo = new Prestamos(lib_id, id, fechaSQL, LibroOperacion.DEVOLUCION.toString());
 				prestamoDAO.insertarPrestamo(prestamo);
 				System.out.println("Devolucion registrada exitosamente!");
 				break;
@@ -501,10 +555,10 @@ public class Principal {
 	private static void estatusLibro() {
 		LibroDAO libroDAO = new LibroDAO();
 		try (Scanner scannerAgregar = new Scanner(System.in)) {
-			System.out.println("ISBN del libro:");
-			int isbn = scannerAgregar.nextInt();
-			List<Libros> libros = libroDAO.obtenerEstatusDeLibro(isbn);
-			System.out.println("| ISBN | TITULO | DISPONIBILIDAD |");
+			System.out.println("ID del libro:");
+			int lib_id = scannerAgregar.nextInt();
+			List<Libros> libros = libroDAO.obtenerEstatusDeLibro(lib_id);
+			System.out.println("| ID de libro | TITULO | DISPONIBILIDAD |");
 			for (Libros libro : libros) {
 				System.out.println(
 						"| " + libro.getIsbn() + " | " + libro.getTitulo() + " | " + libro.getDisponibilidad() + " |");

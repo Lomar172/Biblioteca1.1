@@ -23,11 +23,11 @@ public class PrestamosDAO {
 		//Aqui se manda a validar el objeto de libro.
 		Validador.vaildar(prestamos);
 		//Aqui se define el query que queremos ejecutar.
-		String sql = "INSERT INTO Prestamos (ISBN, ID, Fecha, Libro_Operacion) VALUES (?,?,?,?);";
+		String sql = "INSERT INTO Prestamos (Lib_id, ID, Fecha, Libro_Operacion) VALUES (?,?,?,?);";
 		//Aqui se ejecuta la conexion con la base de datos, se sustituyen los '?' por los valores deseados y se ejecuta el query.
 		try(Connection conn = DatabaseConnection.getInstance().getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, prestamos.getIsbn());
+			pstmt.setInt(1, prestamos.getLib_id());
 			pstmt.setInt(2, prestamos.getId());
 			pstmt.setDate(3, prestamos.getFecha());
 			pstmt.setString(4, prestamos.getLibro_operacion().toString());
@@ -36,11 +36,11 @@ public class PrestamosDAO {
 			//Aqui estamos validando la disponibilidad de un libro, dependiendo del estatus, se tomara una accion u otra.
 			switch (prestamos.getLibro_operacion().toString()) {		
 			case "PRESTAMO": {
-				libro.actualizarLibroDisp(prestamos.getIsbn(), LibroStatus.DISPONIBLE);
+				libro.actualizarLibroDisp(prestamos.getLib_id(), LibroStatus.DISPONIBLE);
 				break;
 			}
 			case "DEVOLUCION": {
-				libro.actualizarLibroDisp(prestamos.getIsbn(), LibroStatus.PRESTADO);
+				libro.actualizarLibroDisp(prestamos.getLib_id(), LibroStatus.PRESTADO);
 				break;
 			}
 			default:
@@ -62,7 +62,7 @@ public class PrestamosDAO {
 			//Aqui estamos repasando los registros que nos muestra el query de este metodo y lo guardamos en una lista. 
 			while(rs.next()){
 				prestamo = new Prestamos(
-						rs.getInt("ISBN"),
+						rs.getInt("Lib_id"),
 						rs.getInt("Id"),
 						rs.getDate("Fecha"),
 						rs.getString("Libro_Operacion")

@@ -12,14 +12,14 @@ public class Prestamos {
 	 */
 	
 	private int folio;
-	private int isbn;
+	private int lib_id;
 	private int id;
 	private Date fecha;
 	private String libro_operacion;
 	
-	public Prestamos(int isbn, int id, Date fecha, String libro_operacion) {
+	public Prestamos(int lib_id, int id, Date fecha, String libro_operacion) {
 		super();
-		this.isbn = isbn;
+		this.lib_id = lib_id;
 		this.id = id;
 		this.fecha = fecha;
 		this.libro_operacion = libro_operacion;
@@ -45,11 +45,11 @@ public class Prestamos {
 		this.folio = folio;
 	}
 	
-	public int getIsbn() {
-		return isbn;
+	public int getLib_id() {
+		return lib_id;
 	}
-	public void setIsbn(int isbn) {
-		this.isbn = isbn;
+	public void setLib_id(int lib_id) {
+		this.lib_id = lib_id;
 	}
 	public int getId() {
 		return id;
