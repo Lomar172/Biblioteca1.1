@@ -502,7 +502,7 @@ public class Principal {
 					System.out.println("Este libro no ha sido prestado");
 					System.out.println("Selecciona otro");
 					System.out.println();
-					operacionDevolucion();
+					menuRecursivo();
 					break;
 				}
 				default:
@@ -512,7 +512,7 @@ public class Principal {
 				System.out.println("No se ha encontrado a ningun miembro con ese ID");
 				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				operacionDevolucion();
+				menuRecursivo();
 			}
 			menuRecursivo();
 		} catch (Exception e) {
@@ -556,13 +556,13 @@ public class Principal {
 					System.out.println("No se ha encontrado a ningun libro con ese ID");
 					System.out.println("Intentelo de nuevo.");
 					System.out.println("");
-					operacionPrestamo();
+					menuRecursivo();
 				}
 			} else {
 				System.out.println("No se ha encontrado a ningun miembro con ese ID");
 				System.out.println("Intentelo de nuevo.");
 				System.out.println("");
-				operacionPrestamo();
+				menuRecursivo();
 			}
 			menuRecursivo();
 		} catch (Exception e) {
