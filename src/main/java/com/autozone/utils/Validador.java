@@ -16,9 +16,12 @@ public class Validador {
 			
 			//Validacion para que los campos no sean nulos
 			if(field.isAnnotationPresent(NotNull.class)) {
-				Object value = field.get(obj);
-				if(value == null) {
-					throw new IllegalArgumentException(field.getName() + " no puede ser nulo.");
+				String value = (String) field.get(obj);
+				if(value == "") {
+					System.out.println("Ha ingresado uno o mas campos en blanco");
+					System.out.println("No se pudo agregar el libro.");
+					System.out.println("");
+					Principal.menuRecursivo();
 				}
 			}
 			
